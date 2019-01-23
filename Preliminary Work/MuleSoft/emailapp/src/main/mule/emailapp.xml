@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:json="http://www.mulesoft.org/schema/mule/json" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="90abbb8f-af29-400c-90a5-464c66ccd77f" >
+		<http:listener-connection host="localhost" port="8001" />
+	</http:listener-config>
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP_Request_configuration" doc:id="f1b8cf14-b0fc-45b7-98f6-7aaa8969026b" >
+		<http:request-connection host="localhost" port="8000" />
+	</http:request-config>
+	<flow name="emailappFlow" doc:id="bbc79a98-1be0-40c0-878e-e26ab947d12f" >
+		<http:listener doc:name="Listener" doc:id="9609fd76-985c-4a43-9545-e01c9a33e7d2" config-ref="HTTP_Listener_config" path="/" allowedMethods="POST"/>
+		<set-variable value="#[payload.user]" doc:name="username" doc:id="c3c0b5a4-f52e-447b-9bb9-233feae514d2" variableName="username"/>
+		<set-variable value="#[payload.pass]" doc:name="password" doc:id="df1bcf85-8dd2-4a13-88a4-5c8650099718" variableName="password"/>
+		<choice doc:name="Choice" doc:id="9fc7d2f0-6ed7-4b76-96f0-0bc53a0fb304" >
+			<when expression='#[vars.username =="" or vars.password ==""]'>
+				<set-payload value="invalid" doc:name="Set Payload" doc:id="d0134902-71d2-4b9d-9d4f-cec8c7cebda0" />
+			</when>
+			<otherwise >
+				<set-payload value="#[vars.username]" doc:name="Set Payload" doc:id="0331c50a-1051-4d3f-8428-d92d96d36d00" mimeType='application/json; username=vars.username'/>
+			</otherwise>
+		</choice>
+	</flow>
+</mule>
