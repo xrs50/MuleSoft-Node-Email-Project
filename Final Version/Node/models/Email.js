@@ -3,7 +3,7 @@ var db = require('../dbconnection');
 var Email = {
 
     getAllEmailsForUser: function(username, callback){
-        return db.query("Select * from emails where To1=?", [username], callback);
+        return db.query("Select * from emails where To1=? and Deleted = 0", [username], callback);
     },
     getEmailById: function(id, callback){
         return db.query("Select * from emails where ID =?", [id], callback);

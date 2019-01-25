@@ -10,6 +10,7 @@ router.get('/inbox/:username', function(req, res, next){
         }
         else{
             res.json(rows)
+            console.log(rows)
         }
     })
 });
