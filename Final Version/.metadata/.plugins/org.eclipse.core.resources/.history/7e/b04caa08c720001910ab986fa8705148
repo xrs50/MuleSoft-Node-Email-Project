@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="4b5fff84-c93e-41c6-8d56-ea3cac691b93">
+		<http:listener-connection host="localhost" port="3001" />
+	</http:listener-config>
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="37e7a0ba-6513-43d6-9808-fdf9af979faa" >
+		<http:request-connection host="localhost" port="3000" />
+	</http:request-config>
+	<flow name="emailserverFlow" doc:id="4ff5b95a-98d0-4ced-860c-749ff1b8c0af" >
+		<http:listener doc:name="Listener" doc:id="08eb62c6-c8bd-4f1d-87a4-53253d5f174c" config-ref="HTTP_Listener_config" path="/login" outputMimeType="application/json"/>
+		<logger level="INFO" doc:name="Logger" doc:id="0146ade6-23cd-47dd-9aab-b9c96c3cee04" message="#[payload]"/>
+		<set-variable doc:name="username" doc:id="b7550fe0-d0f9-431f-b204-601114d1fdbb" variableName="username" mimeType="text/html" value="#[payload.Password]"/>
+		<set-variable value="#[payload.Password]" doc:name="password" doc:id="172210cb-5ac2-4a85-bd54-09f1c2c50ca7" variableName="password" mimeType="text/html"/>
+		<logger level="INFO" doc:name="Logger" doc:id="f546fb39-e816-4377-b0c2-c5ace62c25d7" message="#[vars.username]" />
+		<choice doc:name="Choice" doc:id="67178592-e824-4ca1-8afc-73f51b8a4474" >
+			<when expression='#[vars.username =="" or vars.password ==""]'>
+				<http:request method="CONNECT" doc:name="Request" doc:id="19ad3bd7-5d86-4400-9128-e9dc32820ca2" config-ref="HTTP_Request_configuration" path="/login"/>
+			</when>
+			<otherwise >
+				<http:request method="POST" doc:name="Request" doc:id="b98ecd27-2486-4038-951d-fdeb03c3207b" config-ref="HTTP_Request_configuration" path="Users_/verifyuser" outputMimeType="application/json"/>
+			</otherwise>
+		</choice>
+	</flow>
+</mule>
