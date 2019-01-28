@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.mule.tooling.runtime.muleServerLaunchType">
 <stringAttribute key="launch_mule_server_version" value="org.mule.tooling.server.4.1.4.ee"/>
-<stringAttribute key="mule-agent-port" value="60892"/>
+<stringAttribute key="mule-agent-port" value="65478"/>
 <listAttribute key="mule-project-names">
 <listEntry value="emailserver"/>
 </listAttribute>

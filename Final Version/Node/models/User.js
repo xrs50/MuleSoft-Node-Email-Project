@@ -8,8 +8,11 @@ var User = {
     getAllUsers: function(callback){
         return db.query("Select * from users", callback);
     },
-    findUser: function(Username, callback){
-        return db.query("Select * from users where username = ?", [Username], callback);
+    findUser: function(User, callback){
+        return db.query("Select * from users where username = ?", [User.Username], callback);
+    },
+    verifyPassword: function(User, callback){
+        return db.query("Select * from users where username = ? and password = ?", [User.Username, User.Password], callback);
     }
 };
 module.exports=User;
