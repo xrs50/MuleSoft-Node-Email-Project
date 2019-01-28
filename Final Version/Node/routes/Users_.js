@@ -61,14 +61,14 @@ router.post('/mulesoftlogin', function(req, res, next){
 })
 
 router.post('/verifyuser', function(req, res, next){
-    User.findUser(req.body, function(err, count){
+    User.findUser(req.body.username, function(err, count){
         var name = req.body.username
         if(err)
         {
             res.json(err)
         }
         else{
-            res.json(req.body);
+            res.json(req.body.username);
             console.log("The response from MuleSoft is: "+req.body.username);
             
         }
